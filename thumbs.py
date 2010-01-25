@@ -93,9 +93,12 @@ class ImageWithThumbsFieldFile(ImageFieldFile):
         if self.storage.exists(thumb_name):
             pass
         else:
-            content = self.file
-            thumb_content = generate_thumb(content, size, split[1])
-            self.storage.save(thumb_name, thumb_content)
+            try:
+                content = self.file
+                thumb_content = generate_thumb(content, size, split[1])
+                self.storage.save(thumb_name, thumb_content)
+            except IOError:
+                pass
 
     def save(self, name, content, save=True):
         super(ImageWithThumbsFieldFile, self).save(name, content, save)
